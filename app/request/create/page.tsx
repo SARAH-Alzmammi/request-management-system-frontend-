@@ -3,11 +3,12 @@ import Form from './form';
 import { redirect } from 'next/navigation';
 
 export default async function RegisterPage() {
-  const session = await getServerSession();
-
   return (
     
     <div className="flex flex-col items-center mt-6 bgR">
+        <p className="text-5xl m-10 text-dark_blue font-medium">
+   Create a request
+  </p>
     <Form />
   </div>
 )

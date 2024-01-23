@@ -1,6 +1,5 @@
 import { TURBO_TRACE_DEFAULT_MEMORY_LIMIT } from "next/dist/shared/lib/constants"
 import Link from "next/link"
-import { ChangeEvent, FormEvent, useEffect } from 'react';
 import { getServerSession } from "next-auth/next"
 
 
@@ -10,7 +9,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 export const dynamicParams = TURBO_TRACE_DEFAULT_MEMORY_LIMIT
 
 async function getRequest(id:number,access_token:String) {
- const res = await fetch(`http://127.0.0.1:8000/api/request/${id}`, {
+ const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}request/${id}`, {
   headers: {
    "Content-Type": "application/json",
    "Accept": "application/json",
@@ -43,10 +42,11 @@ export default async function RequestDetails({ params }:any) {
      <hr/>
       </nav>
       <div className=" card font-semibold text-lg mb-2 p-2">
-        <h3  >Title:{request.data.title}</h3>
-          <p>Description: {request.data.description}</p>
-          <Form id={ params.id} status={request.data.status} />
-    </div>
+        <h3  >Title: <span className="font-normal">{request.data.title}</span></h3>
+          <p>Description: <span className="font-normal">{request.data.description}</span></p>
+        </div>
+        <Form id={ params.id} status={request.data.status} />
+
  </div>
 </main>
   )

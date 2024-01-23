@@ -1,8 +1,8 @@
 
 import Card from './card';
 async function getData(token: String) {
-  console.log("the recived token is ",token)
- const res = await await fetch(`http://127.0.0.1:8000/api/requests`, {
+  console.log(`${process.env.NEXT_PUBLIC_API_URL}/requests`)
+ const res = await await fetch(`${process.env.NEXT_PUBLIC_API_URL}requests`, {
   method: 'GET',
   mode: 'cors',
    headers: {
@@ -21,18 +21,18 @@ async function getData(token: String) {
  return res.json()
 }
 export default async function Page({ token }: any) {
-  console.log("122the recived token is ",token)
 
   const data = await getData(token)
   console.log(token)
   console.log(data)
- return <main className="flex justify-around flex-wrap  p-5">
-  
+ return <main className="flex justify-around flex-wrap  p-5 max-w-5/6">
+  <div className="flex justify-start flex-wrap  p-5">
 {
    data?.data?.map((item: { title: string; status: string; description: string; id: number }) => {
     return (
      <Card key={item.id} id={item.id} title={item.title} description={item.description} status={item.status} />)
    })
-  }
+     }
+     </div>
  </main>
 }

@@ -2,8 +2,6 @@
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link';
 import List from '../components/list';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 const Dashboard = () => {
   const { data: session } = useSession()

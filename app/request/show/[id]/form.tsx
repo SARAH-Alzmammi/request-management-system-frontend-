@@ -11,7 +11,7 @@ export default function Form({id,status}:any) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget);
-    const response = await fetch(`http://127.0.0.1:8000/api/request/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}request/${id}`, {
       method: 'PUT',
       headers: {
         "Content-Type": "application/json",
