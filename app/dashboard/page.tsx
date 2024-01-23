@@ -7,15 +7,6 @@ import { useEffect } from 'react';
 
 const Dashboard = () => {
   const { data: session } = useSession()
-
-  // const router = useRouter();
-  
-  // // useEffect(() => {
-  // //   if (!session?.user) {
-  // //     router.push('/auth/login');
-  // //     router.refresh();
-  // //   }
-  // // }, [])
   return (
     <div className="w-full">
       <div

@@ -1,8 +1,12 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 import { FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Form() {
+  const router = useRouter();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -14,8 +18,16 @@ export default function Form() {
         name: formData.get('name'),
       }),
     });
-    console.log({ response });
-  };
+
+    const loginResponse = await signIn('credentials', {
+      email: formData.get('email'),
+      password: formData.get('password'),
+      redirect: false,
+    });
+    if (!loginResponse?.error) {
+      router.push('/dashboard');
+      router.refresh();
+    }};
   return (
     <div className="bg-white w-3/4 sm:w-96 rounded-lg drop-shadow-xl s p-5 text-center">
           <form
