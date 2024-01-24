@@ -1,8 +1,7 @@
 
 import Card from './card';
 async function getData(token: String) {
-  console.log(`${process.env.NEXT_PUBLIC_API_URL}/requests`)
- const res = await await fetch(`${process.env.NEXT_PUBLIC_API_URL}requests`, {
+ const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}requests`, {
   method: 'GET',
   mode: 'cors',
    headers: {
