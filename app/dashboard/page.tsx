@@ -9,7 +9,7 @@ const Dashboard = () => {
     <div className="w-full">
       <div
         className='flex justify-around p-2'>
-        <p>Hello {session?.user?.user.name}</p>
+        <p>Hello {session?.user?.user?.name}</p>
         <button onClick={() => signOut()}>Sign Out</button>
       </div>
       <hr/>
