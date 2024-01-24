@@ -1,14 +1,12 @@
 import { TURBO_TRACE_DEFAULT_MEMORY_LIMIT } from "next/dist/shared/lib/constants"
 import Link from "next/link"
 import { getServerSession } from "next-auth/next"
-
-
 import { notFound } from "next/navigation"
 import Form from "./form";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-export const dynamicParams = TURBO_TRACE_DEFAULT_MEMORY_LIMIT
+// export const dynamicParams = TURBO_TRACE_DEFAULT_MEMORY_LIMIT
 
 async function getRequest(id:number,access_token:String) {
+
  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}request/${id}`, {
   headers: {
    "Content-Type": "application/json",
@@ -30,7 +28,7 @@ async function getRequest(id:number,access_token:String) {
 
 
 export default async function RequestDetails({ params }:any) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession() as  any
   const request = await getRequest(params.id, session?.user?.access_token)
   return (
    <main className="items-center p-3">

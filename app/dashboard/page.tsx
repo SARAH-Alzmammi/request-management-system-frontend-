@@ -4,7 +4,7 @@ import Link from 'next/link';
 import List from '../components/list';
 
 const Dashboard = () => {
-  const { data: session } = useSession()
+  const { data: session } = useSession() as any
   return (
     <div className="w-full">
       <div
