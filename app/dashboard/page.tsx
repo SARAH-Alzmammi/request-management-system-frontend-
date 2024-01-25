@@ -9,7 +9,7 @@ const Dashboard = () => {
     if (!session) {
         redirect('/');
     }
-    if (!session?.user?.user?.name) {
+    if (session?.user?.user?.name == undefined) {
       return <div>Loading session...</div>;
     }
   return (
