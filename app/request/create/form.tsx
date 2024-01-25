@@ -50,12 +50,13 @@ export default function Form() {
       router.push('/dashboard');
       router.refresh();
   };
-    if (!session?.user?.access_token) {
-        return <div>Loading session...</div>;
-    }
     if (!session) {
         redirect('/');
     }
+    if (!session?.user?.access_token) {
+        return <div>Loading session...</div>;
+    }
+
   return (
     <div className="bg-white w-3/4 sm:w-96 rounded-lg drop-shadow-xl s p-5 text-center">
           <form
