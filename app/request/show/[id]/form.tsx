@@ -2,7 +2,7 @@
 import {redirect, useRouter} from 'next/navigation';
 import { FormEvent } from 'react';
 import { useSession } from 'next-auth/react'
-import { useMutation } from "@tanstack/react-query";
+import { useMutation,useQueryClient } from "@tanstack/react-query";
 
 const updateRequest = async (id,status,access_token) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}request/${id}`, {
@@ -28,10 +28,13 @@ const updateRequest = async (id,status,access_token) => {
 export default function Form({id,status}:any) {
   const router = useRouter();
   const { data: session } = useSession()
+  const queryClient = useQueryClient();
 
   const {mutate, isLoading, isError, error } = useMutation({
     mutationFn: ({ id,status,access_token }) =>updateRequest(id,status,access_token),
     onSuccess: () => {
+      queryClient.invalidateQueries("requests_")
+
       console.log(
           'sent request creation request...',
       );

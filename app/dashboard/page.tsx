@@ -9,6 +9,9 @@ const Dashboard = () => {
     if (!session) {
         redirect('/');
     }
+    if (!session?.user?.user?.name) {
+      return <div>Loading session...</div>;
+    }
   return (
     <div className="w-full p-5">
       <div
@@ -21,7 +24,7 @@ const Dashboard = () => {
       <h1 className='text-2xl font-bold p-2'>Requests Dashboard</h1>
       {/* button for creating a new request */}
       <Link href="/request/create" className='text-md font-bold px-2 py-2 border-2 rounded-md border-black text-center items-center hover:bg-purple-500  hover:text-white hover:border-none '>Create Request</Link>
-</div>
+    </div>
       {/* list of all the request*/}
       <List/>
     </div>
