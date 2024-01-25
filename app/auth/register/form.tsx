@@ -54,7 +54,7 @@ export default function Form() {
 
         type="password"
       />
-      <button type="submit" className='border-2 rounded-md border-black text-black hover:bg-opacity-85  p-2     w-full sm:w-8/12'>Register</button>
+      <button type="submit" className='border-2 rounded-md border-black text-black hover:bg-opacity-85  p-2     w-full sm:w-8/12 hover:bg-purple-500  hover:text-white hover:border-none '>Register</button>
     </form>
 </div>
   );

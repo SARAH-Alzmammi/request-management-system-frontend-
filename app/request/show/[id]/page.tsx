@@ -34,7 +34,7 @@ async function getRequest(id:number,access_token:String) {
 
 export default function RequestDetails({ params }:any) {
     const { data: session } =  useSession() as any
-    const query= useQuery({ queryKey: ['requests_',session?.user?.access_token], queryFn: () => getRequest(params.id,session?.user?.access_token),
+    const query= useQuery({ queryKey: ['request',session?.user?.access_token], queryFn: () => getRequest(params.id,session?.user?.access_token),
         enabled: !!session?.user?.access_token })
     const {data, isLoading, error } = query;
 

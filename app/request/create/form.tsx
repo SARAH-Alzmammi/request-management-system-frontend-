@@ -1,12 +1,10 @@
 'use client';
 import {FormEvent} from 'react';
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation';
+import {redirect, useRouter} from 'next/navigation';
 import { useMutation } from "@tanstack/react-query";
 
 const addRequest = async (title,description,status,access_token) => {
-    console.log("from addRequest ",access_token)
-
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}request`, {
         method: 'POST',
         headers: {
@@ -40,6 +38,7 @@ export default function Form() {
         },
         onError: (err: Error) => console.log('ERROR RECEIVED:', err.message),
     });
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -53,6 +52,9 @@ export default function Form() {
   };
     if (!session?.user?.access_token) {
         return <div>Loading session...</div>;
+    }
+    if (!session) {
+        redirect('/');
     }
   return (
     <div className="bg-white w-3/4 sm:w-96 rounded-lg drop-shadow-xl s p-5 text-center">
@@ -78,7 +80,7 @@ export default function Form() {
    <option value="in_progress">In progress</option>
    <option value="completed">completed</option>
 </select>
-      <button type="submit" className='border-2 rounded-md border-black text-black hover:bg-opacity-85  p-2     w-full sm:w-8/12'>Create</button>
+      <button type="submit" className='border-2 rounded-md border-black text-black hover:bg-opacity-85  p-2     w-full sm:w-8/12 hover:bg-purple-500  hover:text-white hover:border-none'>Create</button>
     </form>
 </div>
   );

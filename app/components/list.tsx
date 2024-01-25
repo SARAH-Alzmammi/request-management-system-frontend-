@@ -33,7 +33,7 @@ export default function Page() {
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error has occurred: {error.message}</div>;
  return <main className="flex justify-around flex-wrap  p-5 max-w-5/6">
-  <div className="flex justify-start flex-wrap  p-5">
+  <div className="flex justify-start flex-wrap  p-5 w-full">
 {
     data?.data?.map((item: { title: string; status: string; description: string; id: number }) => {
     return (

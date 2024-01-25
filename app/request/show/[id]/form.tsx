@@ -1,31 +1,62 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import {redirect, useRouter} from 'next/navigation';
 import { FormEvent } from 'react';
 import { useSession } from 'next-auth/react'
+import { useMutation } from "@tanstack/react-query";
+
+const updateRequest = async (id,status,access_token) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}request/${id}`, {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${access_token}`,
+      "Accept":"application/json"
+
+    },
+    body: JSON.stringify({
+      status: status,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update user');
+  }
+
+  return response.json();
+}
 
 export default function Form({id,status}:any) {
   const router = useRouter();
   const { data: session } = useSession()
 
+  const {mutate, isLoading, isError, error } = useMutation({
+    mutationFn: ({ id,status,access_token }) =>updateRequest(id,status,access_token),
+    onSuccess: () => {
+      console.log(
+          'sent request creation request...',
+      );
+    },
+    onError: (err: Error) => console.log('ERROR RECEIVED:', err.message),
+  });
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget);
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}request/${id}`, {
-      method: 'PUT',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${session?.user?.access_token}`,
-        "Accept":"application/json"
-    
-      },
-      body: JSON.stringify({
-        status: formData.get('status'),
-      }),
-    });
+    const  status= formData.get('status')
+
+    const access_token=session?.user?.access_token
+    mutate({ id,status,access_token })
     router.push('/dashboard');
     router.refresh();
+
   };
+  if (!session?.user?.access_token) {
+    return <div>Loading session...</div>;
+  }
+  if (!session) {
+    redirect('/');
+  }
   return (
     <div >
         <form
