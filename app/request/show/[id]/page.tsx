@@ -1,8 +1,13 @@
+'use client';
+
 import { TURBO_TRACE_DEFAULT_MEMORY_LIMIT } from "next/dist/shared/lib/constants"
 import Link from "next/link"
 import { getServerSession } from "next-auth/next"
 import { notFound } from "next/navigation"
 import Form from "./form";
+import {useSession} from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+
 // export const dynamicParams = TURBO_TRACE_DEFAULT_MEMORY_LIMIT
 
 async function getRequest(id:number,access_token:String) {
@@ -27,9 +32,15 @@ async function getRequest(id:number,access_token:String) {
 }
 
 
-export default async function RequestDetails({ params }:any) {
-  const session = await getServerSession() as  any
-  const request = await getRequest(params.id, session?.user?.access_token)
+export default function RequestDetails({ params }:any) {
+    const { data: session } =  useSession() as any
+    const query= useQuery({ queryKey: ['requests_',session?.user?.access_token], queryFn: () => getRequest(params.id,session?.user?.access_token),
+        enabled: !!session?.user?.access_token })
+    const {data, isLoading, error } = query;
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>An error has occurred: {error.message}</div>;
+    console.log(data)
   return (
    <main className="items-center p-3">
    
@@ -40,10 +51,10 @@ export default async function RequestDetails({ params }:any) {
      <hr/>
       </nav>
       <div className=" card font-semibold text-lg mb-2 p-2">
-        <h3  >Title: <span className="font-normal">{request.data.title}</span></h3>
-          <p>Description: <span className="font-normal">{request.data.description}</span></p>
+        <h3  >Title: <span className="font-normal">{data?.data.title}</span></h3>
+          <p>Description: <span className="font-normal">{data?.data.description}</span></p>
         </div>
-        <Form id={ params.id} status={request.data.status} />
+        <Form id={ params.id} status={data?.data.status} />
 
  </div>
 </main>

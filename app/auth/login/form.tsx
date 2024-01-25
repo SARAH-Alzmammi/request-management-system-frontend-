@@ -15,7 +15,7 @@ export default function Form() {
       redirect: false,
     });
 
-    console.log({ response });
+
     if (!response?.error) {
       router.push('/dashboard');
       router.refresh();

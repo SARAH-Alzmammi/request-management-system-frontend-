@@ -1,10 +1,15 @@
+'use client';
 
 import Card from './card';
-async function getData(token: String) {
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from 'next-auth/react'
+
+async function fetchRequests(token: String) {
  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}requests`, {
   method: 'GET',
   mode: 'cors',
    headers: {
+
     "Content-Type": "application/json",
     "Accept": "application/json",
     "Authorization": `Bearer ${token}`,
@@ -19,15 +24,18 @@ async function getData(token: String) {
  }
  return res.json()
 }
-export default async function Page({ token }: any) {
 
-  const data = await getData(token)
-  console.log(token)
-  console.log(data)
+export default function Page() {
+    const { data: session } =  useSession() as any
+    const query= useQuery({ queryKey: ['requests_',session?.user?.access_token], queryFn: () => fetchRequests(session?.user?.access_token),
+        enabled: !!session?.user?.access_token })
+    const {data, isLoading, error } = query;
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>An error has occurred: {error.message}</div>;
  return <main className="flex justify-around flex-wrap  p-5 max-w-5/6">
   <div className="flex justify-start flex-wrap  p-5">
 {
-   data?.data?.map((item: { title: string; status: string; description: string; id: number }) => {
+    data?.data?.map((item: { title: string; status: string; description: string; id: number }) => {
     return (
      <Card key={item.id} id={item.id} title={item.title} description={item.description} status={item.status} />)
    })
